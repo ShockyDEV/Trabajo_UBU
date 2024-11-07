@@ -1,24 +1,27 @@
 ﻿@page
 @model Trabajo_UBU.Pages.ProfileModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Profile"; // Título de la página de perfil
 }
 
 <div class="profile-container">
+    <!-- Mensaje de bienvenida personalizado para el usuario logeado -->
     <h2>Bienvenido @Model.UserName!</h2>
-    <p>Estas logeado como: <strong>@Model.Role</strong></p>
+    <p>Estás logeado como: <strong>@Model.Role</strong></p>
 
+    <!-- Verifica si el usuario tiene rol de administrador para mostrarle opciones adicionales -->
     @if (Model.Role == "Admin")
     {
         <div class="admin-section">
             <h3>Funciones del administrador</h3>
             <p>Administra las cuentas de usuario y observa los logs de conexión.</p>
 
-            <!-- Admin Panels -->
+            <!-- Opciones exclusivas para el administrador -->
             <a asp-page="/AdminPanel" class="btn btn-primary" style="margin-top: 10px;">Gestionar solicitudes de cuentas</a>
             <a href="/AccessLog" class="btn btn-info" style="margin-top: 10px;">Ver los registros de acceso</a>
         </div>
     }
+    // Si el rol es de usuario, se muestran funciones específicas para el usuario estándar
     else if (Model.Role == "User")
     {
         <div class="user-section">
@@ -27,10 +30,11 @@
         </div>
     }
 
-    <!-- Button to access Warehouse Slot Selection for both Admin and User -->
+    <!-- Botón para acceder a la selección de huecos en el almacén para todos los usuarios -->
     <a asp-page="/Warehouse" class="btn btn-success" style="margin-top: 20px;">Seleccionar Hueco en el Almacén</a>
 
+    <!-- Formulario para cerrar sesión -->
     <form method="post" asp-page-handler="Logout">
-        <button type="submit" class="logout-button">Logout</button>
+        <button type="submit" class="logout-button">Cerrar sesión</button>
     </form>
 </div>

@@ -8,96 +8,105 @@ namespace Trabajo_UBU.Pages
 {
     public class IndexModel : PageModel
     {
+        // Propiedades enlazadas para recibir el email y la contraseña de inicio de sesión
         [BindProperty]
         public string Email { get; set; }
-        [BindProperty]
-        public string Password { get; set; }
-        public string Message { get; set; }
-        public string RequestMessage { get; set; }
 
         [BindProperty]
+        public string Password { get; set; }
+
+        // Mensajes de retroalimentación para el usuario
+        public string Message { get; set; } // Mensaje de error de inicio de sesión
+        public string RequestMessage { get; set; } // Mensaje para solicitudes de cuenta
+
+        // Propiedades enlazadas para la solicitud de nueva cuenta
+        [BindProperty]
         public string NewEmail { get; set; }
+
         [BindProperty]
         public string NewPassword { get; set; }
+
         [BindProperty]
         public string ConfirmPassword { get; set; }
 
+        // Dependencia de la capa de datos para la gestión de usuarios y solicitudes de cuenta
         private readonly ICapaDatos _dbGenTree;
 
+        // Constructor que recibe una instancia de ICapaDatos
         public IndexModel(ICapaDatos dbGenTree)
         {
             _dbGenTree = dbGenTree;
         }
 
-        public void OnGet() { }
+        public void OnGet() { } // Método para inicializar la página en una solicitud GET
 
+        // Método para el manejo del inicio de sesión
         public async Task<IActionResult> OnPostLogin()
         {
+            // Verifica si el usuario y la contraseña son válidos
             if (_dbGenTree.ValidateUser(Email, Password))
             {
-                string role = _dbGenTree.GetUserRole(Email);
+                string role = _dbGenTree.GetUserRole(Email); // Obtiene el rol del usuario
 
-                // Create user claims
+                // Crea las credenciales del usuario para la autenticación
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, Email),
-            new Claim(ClaimTypes.Role, role)
-        };
+                {
+                    new Claim(ClaimTypes.Name, Email),
+                    new Claim(ClaimTypes.Role, role)
+                };
 
-                // Create the claims identity and the authentication cookie
+                // Crea la identidad de las credenciales y el cookie de autenticación
                 var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");
                 var authProperties = new AuthenticationProperties
                 {
-                    IsPersistent = true // Keeps the user logged in even after closing the browser
+                    IsPersistent = true // Mantiene al usuario autenticado incluso después de cerrar el navegador
                 };
 
-                // Sign in the user
+                // Firma al usuario para establecer la sesión de autenticación
                 await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                // Redirect to the profile page after successful login
+                // Redirige a la página de perfil tras el inicio de sesión exitoso
                 return RedirectToPage("/Profile", new { userName = Email, role });
             }
 
-            // Display error message if credentials are invalid
+            // Mensaje de error si las credenciales son incorrectas
             Message = "Las credenciales no son válidas.";
             return Page();
         }
 
-
+        // Método para manejar las solicitudes de creación de nueva cuenta
         public IActionResult OnPostRequestAccount()
         {
-            // Basic validation for email and password
+            // Validación básica de los campos de email y contraseña
             if (string.IsNullOrWhiteSpace(NewEmail) || string.IsNullOrWhiteSpace(NewPassword) || string.IsNullOrWhiteSpace(ConfirmPassword))
             {
                 RequestMessage = "No pueden quedar espacios en blanco.";
                 return Page();
             }
 
-            // Password requirements check
+            // Verifica los requisitos de la contraseña (mínimo 12 caracteres, solo letras y números)
             var passwordCriteria = new System.Text.RegularExpressions.Regex(@"^[A-Za-z\d]{12,}$");
 
             if (!passwordCriteria.IsMatch(NewPassword))
             {
-                RequestMessage = "La contraseña debe de tener al menos 12 carácteres y contener únicamente letras y números.";
+                RequestMessage = "La contraseña debe de tener al menos 12 caracteres y contener únicamente letras y números.";
                 return Page();
             }
 
-            // Confirm password match
+            // Verifica que la contraseña y su confirmación coincidan
             if (NewPassword != ConfirmPassword)
             {
                 RequestMessage = "Las contraseñas no coinciden.";
                 return Page();
             }
 
-            // Add new account request to pending list
+            // Agrega la solicitud de nueva cuenta a la lista de pendientes
             _dbGenTree.AddAccountRequest(NewEmail, NewPassword);
 
-            // Set a confirmation message for the user
+            // Mensaje de confirmación para el usuario tras solicitar la cuenta
             RequestMessage = "Gracias por solicitar una cuenta. Pronto serás contactado.";
 
-            return Page(); // Reload the page with the message
+            return Page(); // Recarga la página mostrando el mensaje de confirmación
         }
     }
 }
-
-

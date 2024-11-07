@@ -1,34 +1,36 @@
 ﻿@page
 @model Trabajo_UBU.Pages.AccessLogModel
 @{
-    ViewData["Title"] = "Access Log";
+    ViewData["Title"] = "Access Log"; // Título de la página
 }
 
-
-
 <div class="access-log">
+    <!-- Título principal de la sección de log de accesos -->
     <h2>Log de Accesos</h2>
-    <p>Esta pagina muestra el log de todos los acceso a la aplicación.</p>
+    <p>Esta página muestra el log de todos los accesos a la aplicación.</p>
 
+    <!-- Tabla para mostrar los registros de acceso -->
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Date and Time</th>
-                <th>User</th>
-                <th>Success</th>
+                <th>Fecha y Hora</th> <!-- Encabezado de columna para la fecha y hora del acceso -->
+                <th>Usuario</th> <!-- Encabezado de columna para el nombre de usuario -->
+                <th>Éxito</th> <!-- Encabezado de columna para indicar si el acceso fue exitoso -->
             </tr>
         </thead>
         <tbody>
+            <!-- Bucle para iterar sobre cada entrada en el log de accesos -->
             @foreach (var log in Model.AccessLog)
             {
                 <tr>
-                    <td>@log.Timestamp</td>
-                    <td>@log.UserName</td>
-                    <td>@(log.Success ? "Yes" : "No")</td>
+                    <td>@log.Timestamp</td> <!-- Muestra la fecha y hora del acceso -->
+                    <td>@log.UserName</td> <!-- Muestra el nombre del usuario que intentó acceder -->
+                    <td>@(log.Success ? "Sí" : "No")</td> <!-- Indica si el acceso fue exitoso o no -->
                 </tr>
             }
         </tbody>
     </table>
 
+    <!-- Enlace para regresar al perfil del administrador -->
     <a asp-page="/Profile" asp-route-userName="@Model.UserName" asp-route-role="Admin" class="btn btn-secondary" style="margin-top: 15px;">Volver al Perfil</a>
 </div>
