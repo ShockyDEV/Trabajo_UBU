@@ -1,0 +1,205 @@
+/* wwwroot/css/site.css */
+
+/* Ensure the background covers the whole viewport */
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?cs=srgb&dl=pexels-tiger-lily-4483610.jpg&fm=jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1; /* Ensures the background stays behind the content */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    position: relative;
+    z-index: 1;
+}
+
+.form-container {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+}
+
+
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-container div {
+        margin-bottom: 15px;
+    }
+
+    .form-container label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-container input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .form-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+
+.toggle-button {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+
+
+.profile-container {
+    text-align: center;
+    padding: 50px;
+}
+
+    .profile-container h2 {
+        font-size: 2em;
+        color: #333;
+    }
+
+    .profile-container p {
+        font-size: 1.2em;
+        color: #555;
+    }
+
+
+.admin-section {
+    border: 1px solid #007bff;
+    padding: 15px;
+    background-color: #e9f7fe;
+    margin-top: 20px;
+}
+
+.user-section {
+    border: 1px solid #28a745;
+    padding: 15px;
+    background-color: #e9fce9;
+    margin-top: 20px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+
+.logout-button {
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+    .logout-button:hover {
+        background-color: #ff1a1a;
+    }
+
+.text-success {
+    color: green;
+    font-weight: bold;
+}
+
+.text-danger {
+    color: red;
+    font-weight: bold;
+}
+
+
+/* Styles for the warehouse grid */
+#warehouse {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.row {
+    display: flex;
+    gap: 5px;
+}
+
+.slot {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    position: relative;
+}
+
+    .slot input[type="radio"] {
+        opacity: 0;
+        position: absolute;
+    }
+
+    .slot.available label {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: green;
+        cursor: pointer;
+    }
+
+    .slot.occupied label {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: red;
+        cursor: not-allowed;
+    }
+
+    .slot input[type="radio"]:checked + label {
+        outline: 2px solid yellow;
+        box-shadow: 0 0 10px 2px yellow;
+    }

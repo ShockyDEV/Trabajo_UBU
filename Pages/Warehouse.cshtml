@@ -1,0 +1,38 @@
+﻿@page
+@model Trabajo_UBU.Pages.WarehouseModel
+@{
+    ViewData["Title"] = "Warehouse";
+}
+
+<h2>Seleccione su espacio en el almacén</h2>
+
+<form method="post">
+    <div id="warehouse">
+        @for (int row = 0; row < Model.Rows; row++)
+        {
+            <div class="row">
+                @for (int col = 0; col < Model.Columns; col++)
+                {
+                    string slotId = $"slot-{row}-{col}";
+                    bool isOccupied = Model.OccupiedSlots.Contains(slotId);
+                    bool isUserSlot = Model.UserSlot == slotId;
+
+                    <div class="slot @(isOccupied ? "occupied" : "available")">
+                        <input type="radio" id="@slotId" name="SelectedSlot" value="@slotId" @(isOccupied ? "disabled" : "") @(isUserSlot ? "checked" : "") />
+                        <label for="@slotId"></label>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Confirmar Selección</button>
+    <a asp-page="/Profile" class="btn btn-secondary" style="margin-left: 10px; margin-top: 15px;">Volver al Perfil</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.UserSlot))
+{
+    <p class="alert alert-success" style="margin-top: 15px;">
+        You have already selected your free slot: <strong>@Model.UserSlot</strong>.
+    </p>
+}

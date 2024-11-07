@@ -1,0 +1,61 @@
+﻿@page
+@model Trabajo_UBU.Pages.IndexModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="background-image"></div>
+
+
+<div class="login-container">
+    <!-- Login Form -->
+    <div id="loginForm" class="form-container" style="display: @(string.IsNullOrEmpty(Model.RequestMessage) ? "block" : "none")">
+        <h2>Login</h2>
+        <form method="post" asp-page-handler="Login">
+            <div>
+                <label for="Email">Email:</label>
+                <input type="email" id="Email" name="Email" required />
+            </div>
+            <div>
+                <label for="Password">Password:</label>
+                <input type="password" id="Password" name="Password" required />
+            </div>
+            <button type="submit">Login</button>
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <p style="color: red;">@Model.Message</p>
+            }
+        </form>
+        <button class="toggle-button" onclick="showRequestForm()">Solicitar cuenta</button>
+    </div>
+
+    <!-- Request Account Form -->
+    <div id="requestForm" class="form-container" style="display: @(string.IsNullOrEmpty(Model.RequestMessage) ? "none" : "block")">
+        <h2>Solicitar nueva cuenta</h2>
+        <form method="post" asp-page-handler="RequestAccount">
+            <div>
+                <label for="NewEmail">Email:</label>
+                <input type="email" id="NewEmail" name="NewEmail" required />
+            </div>
+            <div>
+                <label for="NewPassword">Password:</label>
+                <input type="password" id="NewPassword" name="NewPassword" required />
+                <p id="passwordError" style="color: red; display: none;">La contraseña debe de tener al menos 12 carácteres y contener únicamente letras y números.</p>
+            </div>
+            <div>
+                <label for="ConfirmPassword">Confirmar Password:</label>
+                <input type="password" id="ConfirmPassword" name="ConfirmPassword" required />
+                <p id="confirmPasswordError" style="color: red; display: none;">Las contraseñas no coinciden.</p>
+            </div>
+            <button type="submit">Solicitar Cuenta</button>
+
+            @if (!string.IsNullOrEmpty(Model.RequestMessage))
+            {
+                <p style="color: green; margin-top: 10px;">@Model.RequestMessage</p>
+            }
+        </form>
+        <button class="toggle-button" onclick="showLoginForm()">Volver al Login</button>
+    </div>
+
+
+    <script src="~/js/site.js"></script>

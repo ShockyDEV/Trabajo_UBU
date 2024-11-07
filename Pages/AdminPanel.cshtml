@@ -1,0 +1,53 @@
+﻿@page
+@model Trabajo_UBU.Pages.AdminPanelModel
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="admin-panel">
+    <h2>Panel de administrador - Gestión de nuevas cuentas</h2>
+
+    <a asp-page="/Profile" asp-route-userName="@Model.UserName" asp-route-role="Admin" class="btn btn-secondary" style="margin-bottom: 15px;">Volver al Perfil</a>
+
+    <p>En la siguiente tabla se encuentran las cuentas por aprobar:</p>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Estado</th>
+                <th>Fecha de aprobación/Rechazo</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var request in Model.PendingRequests)
+            {
+                <tr>
+                    <td>@request.Email</td>
+                    <td>
+                        <span class="@(request.Status == "Approved" ? "text-success" : request.Status == "Rejected" ? "text-danger" : "")">
+                            @request.Status
+                        </span>
+                    </td>
+                    <td>@(request.ApprovalDate.HasValue ? request.ApprovalDate.Value.ToString("g") : "Pending")</td>
+                    <td>
+                        @if (request.Status == "Pending")
+                        {
+                            <form method="post" asp-page-handler="Approve" asp-route-email="@request.Email" style="display: inline;">
+                                <button type="submit" class="btn btn-success">Approve</button>
+                            </form>
+                            <form method="post" asp-page-handler="Reject" asp-route-email="@request.Email" style="display: inline;">
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span>@request.Status</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

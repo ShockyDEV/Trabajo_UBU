@@ -1,0 +1,36 @@
+﻿@page
+@model Trabajo_UBU.Pages.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="profile-container">
+    <h2>Bienvenido @Model.UserName!</h2>
+    <p>Estas logeado como: <strong>@Model.Role</strong></p>
+
+    @if (Model.Role == "Admin")
+    {
+        <div class="admin-section">
+            <h3>Funciones del administrador</h3>
+            <p>Administra las cuentas de usuario y observa los logs de conexión.</p>
+
+            <!-- Admin Panels -->
+            <a asp-page="/AdminPanel" class="btn btn-primary" style="margin-top: 10px;">Gestionar solicitudes de cuentas</a>
+            <a href="/AccessLog" class="btn btn-info" style="margin-top: 10px;">Ver los registros de acceso</a>
+        </div>
+    }
+    else if (Model.Role == "User")
+    {
+        <div class="user-section">
+            <h3>Funciones de Usuario</h3>
+            <p>Accede a tu información personal y espacio en el sistema.</p>
+        </div>
+    }
+
+    <!-- Button to access Warehouse Slot Selection for both Admin and User -->
+    <a asp-page="/Warehouse" class="btn btn-success" style="margin-top: 20px;">Seleccionar Hueco en el Almacén</a>
+
+    <form method="post" asp-page-handler="Logout">
+        <button type="submit" class="logout-button">Logout</button>
+    </form>
+</div>

@@ -1,0 +1,34 @@
+﻿@page
+@model Trabajo_UBU.Pages.AccessLogModel
+@{
+    ViewData["Title"] = "Access Log";
+}
+
+
+
+<div class="access-log">
+    <h2>Log de Accesos</h2>
+    <p>Esta pagina muestra el log de todos los acceso a la aplicación.</p>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date and Time</th>
+                <th>User</th>
+                <th>Success</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in Model.AccessLog)
+            {
+                <tr>
+                    <td>@log.Timestamp</td>
+                    <td>@log.UserName</td>
+                    <td>@(log.Success ? "Yes" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a asp-page="/Profile" asp-route-userName="@Model.UserName" asp-route-role="Admin" class="btn btn-secondary" style="margin-top: 15px;">Volver al Perfil</a>
+</div>
